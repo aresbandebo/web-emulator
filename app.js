@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnForward = document.getElementById('btn-forward');
     const btnRefresh = document.getElementById('btn-refresh');
     const btnGo = document.getElementById('btn-go');
+    const btnFullscreen = document.getElementById('btn-fullscreen');
 
     // Proxy service (CORS proxy)
     // corsproxy.io is a popular free proxy for this purpose
@@ -86,6 +87,27 @@ document.addEventListener('DOMContentLoaded', () => {
             browserFrame.contentWindow.history.forward();
         } catch (e) {
             console.warn("Cannot access iframe history due to cross-origin restrictions.");
+        }
+    });
+
+    btnFullscreen.addEventListener('click', () => {
+        const browserWindow = document.querySelector('.browser-window');
+        if (!document.fullscreenElement) {
+            if (browserWindow.requestFullscreen) {
+                browserWindow.requestFullscreen();
+            } else if (browserWindow.webkitRequestFullscreen) { /* Safari */
+                browserWindow.webkitRequestFullscreen();
+            } else if (browserWindow.msRequestFullscreen) { /* IE11 */
+                browserWindow.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) { /* Safari */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE11 */
+                document.msExitFullscreen();
+            }
         }
     });
 
