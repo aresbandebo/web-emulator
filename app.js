@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingOverlay = document.getElementById('loading-overlay');
     const welcomeScreen = document.getElementById('welcome-screen');
     const proxyModeToggle = document.getElementById('proxy-mode');
+    const deepProxyToggle = document.getElementById('deep-proxy-mode');
     
     // Buttons
     const btnBack = document.getElementById('btn-back');
@@ -39,9 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let finalSource = normalized;
 
-        if (proxyModeToggle.checked) {
+        if (proxyModeToggle.checked && deepProxyToggle.checked) {
             finalSource = PROXY_BASE + encodeURIComponent(normalized);
-            console.log("Fetching via Proxy:", finalSource);
+            console.log("Fetching via Deep Proxy:", finalSource);
             
             fetch(finalSource)
                 .then(res => res.text())
@@ -74,6 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 .finally(() => {
                     setTimeout(() => loadingOverlay.classList.add('hidden'), 300);
                 });
+        } else if (proxyModeToggle.checked) {
+            // Standard proxy: Use direct iframe src to the proxy service
+            finalSource = PROXY_BASE + encodeURIComponent(normalized);
+            console.log("Loading via Standard Proxy:", finalSource);
+            browserFrame.removeAttribute('srcdoc');
+            browserFrame.src = finalSource;
         } else {
             console.log("Loading Direct:", finalSource);
             browserFrame.removeAttribute('srcdoc');
