@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpage Emulator</title>
+    <!-- Modern Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for elegant UI -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-decor">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="desktop">
+        <header class="app-header">
+            <h1>Webpage Emulator</h1>
+            <p>A static proxy environment for GitHub Pages.</p>
+        </header>
+
+        <div class="browser-window glass">
+            <!-- Window Title Bar -->
+            <div class="title-bar">
+                <div class="window-controls">
+                    <span class="dot close"></span>
+                    <span class="dot minimize"></span>
+                    <span class="dot maximize"></span>
+                </div>
+                <div class="title-text">Antigravity Browser</div>
+                <div class="proxy-toggle" title="Enable CORS proxy to bypass X-Frame-Options">
+                    <label class="switch">
+                        <input type="checkbox" id="proxy-mode" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="proxy-label">Proxy Mode</span>
+                </div>
+            </div>
+
+            <!-- Browser Toolbar -->
+            <div class="toolbar">
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="btn-back" title="Go Back"><i class="ph ph-caret-left"></i></button>
+                    <button class="nav-btn" id="btn-forward" title="Go Forward"><i class="ph ph-caret-right"></i></button>
+                    <button class="nav-btn" id="btn-refresh" title="Reload"><i class="ph ph-arrows-clockwise"></i></button>
+                </div>
+                <div class="url-bar-container">
+                    <div class="security-indicator" id="sec-indicator">
+                        <i class="ph ph-lock-key"></i>
+                    </div>
+                    <form id="url-form">
+                        <input type="text" id="url-input" class="url-input" placeholder="Enter URL or search...">
+                    </form>
+                </div>
+                <button class="action-btn" id="btn-go" title="Navigate"><i class="ph ph-arrow-right"></i></button>
+            </div>
+
+            <!-- Browser Content Area -->
+            <div class="content-area">
+                <div class="loading-overlay hidden" id="loading-overlay">
+                    <div class="spinner"></div>
+                </div>
+                <iframe id="browser-frame" class="browser-frame" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+                <div class="welcome-screen" id="welcome-screen">
+                    <div class="brand">
+                        <i class="ph ph-globe-hemisphere-east"></i>
+                        <h2>Ready to Browse</h2>
+                        <p>Enter a URL above to start emulating.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
