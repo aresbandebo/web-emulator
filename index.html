@@ -9,6 +9,9 @@
     <!-- Phosphor Icons for elegant UI -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="style.css">
+    <!-- Ultraviolet Proxy Scripts -->
+    <script src="uv/uv.bundle.js"></script>
+    <script src="uv/uv.config.js"></script>
 </head>
 <body>
     <div class="background-decor">
@@ -32,19 +35,19 @@
                     <span class="dot maximize"></span>
                 </div>
                 <div class="title-text">Antigravity Browser</div>
-                <div class="proxy-toggle" title="Enable CORS proxy to bypass X-Frame-Options">
+                <div class="proxy-toggle" title="Use frontend CORS proxy (corsproxy.io). Replit server not required.">
                     <label class="switch">
-                        <input type="checkbox" id="proxy-mode" checked>
+                        <input type="checkbox" id="proxy-mode">
                         <span class="slider round"></span>
                     </label>
-                    <span class="proxy-label">Proxy Mode</span>
+                    <span class="proxy-label">Basic Proxy</span>
                 </div>
-                <div class="proxy-toggle" title="Inject base tag to fix missing CSS/images (May break complex games)">
+                <div class="proxy-toggle" title="Use Ultraviolet + Replit Bare Server (Fixes games & complex apps)">
                     <label class="switch">
-                        <input type="checkbox" id="deep-proxy-mode">
+                        <input type="checkbox" id="uv-proxy-mode" checked>
                         <span class="slider round"></span>
                     </label>
-                    <span class="proxy-label">Fix Layout</span>
+                    <span class="proxy-label">Ultraviolet</span>
                 </div>
             </div>
 

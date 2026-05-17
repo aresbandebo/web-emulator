@@ -5,7 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingOverlay = document.getElementById('loading-overlay');
     const welcomeScreen = document.getElementById('welcome-screen');
     const proxyModeToggle = document.getElementById('proxy-mode');
-    const deepProxyToggle = document.getElementById('deep-proxy-mode');
+    const uvProxyToggle = document.getElementById('uv-proxy-mode');
+
+    // Register Ultraviolet Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js', {
+            scope: __uv$config.prefix
+        }).then(() => {
+            console.log('UV Service worker registered successfully');
+        }).catch(err => {
+            console.error('UV Service worker registration failed:', err);
+        });
+    }
     
     // Buttons
     const btnBack = document.getElementById('btn-back');
@@ -40,41 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let finalSource = normalized;
 
-        if (proxyModeToggle.checked && deepProxyToggle.checked) {
-            finalSource = PROXY_BASE + encodeURIComponent(normalized);
-            console.log("Fetching via Deep Proxy:", finalSource);
-            
-            fetch(finalSource)
-                .then(res => res.text())
-                .then(html => {
-                    let targetOrigin;
-                    try {
-                        targetOrigin = new URL(normalized).origin;
-                    } catch (e) {
-                        targetOrigin = normalized;
-                    }
-                    
-                    const baseTag = `<base href="${targetOrigin}/">`;
-                    let modifiedHtml = html;
-                    
-                    if (html.match(/<head>/i)) {
-                        modifiedHtml = html.replace(/<head>/i, `<head>\n    ${baseTag}`);
-                    } else {
-                        modifiedHtml = baseTag + '\n' + html;
-                    }
-                    
-                    // Clear src to use srcdoc
-                    browserFrame.removeAttribute('src');
-                    browserFrame.srcdoc = modifiedHtml;
-                })
-                .catch(err => {
-                    console.error("Proxy fetch failed:", err);
-                    browserFrame.removeAttribute('src');
-                    browserFrame.srcdoc = `<h2 style="font-family:sans-serif;color:red;">Error loading page</h2><p>${err}</p>`;
-                })
-                .finally(() => {
-                    setTimeout(() => loadingOverlay.classList.add('hidden'), 300);
-                });
+        if (uvProxyToggle.checked) {
+            console.log("Loading via Ultraviolet Proxy");
+            browserFrame.removeAttribute('srcdoc');
+            // Route through UV SW
+            browserFrame.src = __uv$config.prefix + __uv$config.encodeUrl(normalized);
         } else if (proxyModeToggle.checked) {
             // Standard proxy: Use direct iframe src to the proxy service
             finalSource = PROXY_BASE + encodeURIComponent(normalized);
