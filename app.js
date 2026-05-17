@@ -40,15 +40,45 @@ document.addEventListener('DOMContentLoaded', () => {
         let finalSource = normalized;
 
         if (proxyModeToggle.checked) {
-            // Encode the URL for the proxy
             finalSource = PROXY_BASE + encodeURIComponent(normalized);
-            console.log("Loading via Proxy:", finalSource);
+            console.log("Fetching via Proxy:", finalSource);
+            
+            fetch(finalSource)
+                .then(res => res.text())
+                .then(html => {
+                    let targetOrigin;
+                    try {
+                        targetOrigin = new URL(normalized).origin;
+                    } catch (e) {
+                        targetOrigin = normalized;
+                    }
+                    
+                    const baseTag = `<base href="${targetOrigin}/">`;
+                    let modifiedHtml = html;
+                    
+                    if (html.match(/<head>/i)) {
+                        modifiedHtml = html.replace(/<head>/i, `<head>\n    ${baseTag}`);
+                    } else {
+                        modifiedHtml = baseTag + '\n' + html;
+                    }
+                    
+                    // Clear src to use srcdoc
+                    browserFrame.removeAttribute('src');
+                    browserFrame.srcdoc = modifiedHtml;
+                })
+                .catch(err => {
+                    console.error("Proxy fetch failed:", err);
+                    browserFrame.removeAttribute('src');
+                    browserFrame.srcdoc = `<h2 style="font-family:sans-serif;color:red;">Error loading page</h2><p>${err}</p>`;
+                })
+                .finally(() => {
+                    setTimeout(() => loadingOverlay.classList.add('hidden'), 300);
+                });
         } else {
             console.log("Loading Direct:", finalSource);
+            browserFrame.removeAttribute('srcdoc');
+            browserFrame.src = finalSource;
         }
-
-        // Set the source
-        browserFrame.src = finalSource;
     }
 
     // Event Listeners
