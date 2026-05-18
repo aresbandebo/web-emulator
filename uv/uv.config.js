@@ -1,7 +1,7 @@
 /*global Ultraviolet*/
 self.__uv$config = {
     prefix: '/web-emulator/uv/service/',
-    bare: 'https://password-genotator-aresbandebocamb.replit.app/bare/',
+    bare: 'https://password-genotator--AresBandeboCamb.replit.app/bare/',
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,
     handler: '/web-emulator/uv/uv.handler.js',
