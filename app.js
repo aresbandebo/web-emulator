@@ -1,4 +1,9 @@
+import { BareMuxConnection } from "./uv/bare-mux/index.mjs";
 
+const connection = new BareMuxConnection("/web-emulator/uv/bare-mux/worker.js");
+connection.setTransport("/web-emulator/uv/bare-transport/index.mjs", ["https://bare-server-106043020272.northamerica-northeast1.run.app/bare/"])
+    .then(() => console.log("Bare transport successfully initialized!"))
+    .catch(err => console.error("Failed to set Bare transport:", err));
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('url-form');
