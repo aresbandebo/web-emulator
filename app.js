@@ -1,9 +1,4 @@
-import { BareMuxConnection } from "./uv/bare-mux/index.mjs";
 
-const connection = new BareMuxConnection("/web-emulator/uv/bare-mux/worker.js");
-connection.setTransport("/web-emulator/uv/curl/index.mjs", [{ wisp: "wss://wisp.mercurywork.shop/" }])
-    .then(() => console.log("Epoxy transport via Wisp successfully initialized!"))
-    .catch(err => console.error("Failed to set Epoxy transport:", err));
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('url-form');

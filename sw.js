@@ -7,7 +7,7 @@
  */
 importScripts('/web-emulator/uv/uv.bundle.js');
 importScripts('/web-emulator/uv/uv.config.js');
-importScripts(__uv$config.sw || '/web-emulator/uv/uv.sw.js');
+importScripts('/web-emulator/uv/uv.sw.js');
 
 const uv = new UVServiceWorker();
 
