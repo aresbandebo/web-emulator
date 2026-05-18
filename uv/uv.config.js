@@ -1,7 +1,6 @@
 /*global Ultraviolet*/
 self.__uv$config = {
     prefix: '/web-emulator/uv/service/',
-    bare: 'https://tomp.app/bare/',
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,
     handler: '/web-emulator/uv/uv.handler.js',
