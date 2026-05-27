@@ -1,7 +1,8 @@
 import { BareMuxConnection } from "./uv/bare-mux/index.mjs";
 
-const connection = new BareMuxConnection("/web-emulator/uv/bare-mux/worker.js");
-connection.setTransport("/web-emulator/uv/bare-transport/index.mjs", ["https://bare-server-106043020272.northamerica-northeast1.run.app/bare/"])
+const basePath = location.pathname.replace(/\/[^\/]*$/, '/');
+const connection = new BareMuxConnection(basePath + "uv/bare-mux/worker.js");
+connection.setTransport(basePath + "uv/bare-transport/index.mjs", ["https://bare-server-106043020272.northamerica-northeast1.run.app/bare/"])
     .then(() => console.log("Bare transport successfully initialized!"))
     .catch(err => console.error("Failed to set Bare transport:", err));
 
@@ -15,11 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const uvProxyToggle = document.getElementById('uv-proxy-mode');
 
     // Register Ultraviolet Service Worker
+    let swReady = Promise.resolve();
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js', {
+        swReady = navigator.serviceWorker.register('sw.js', {
             scope: __uv$config.prefix
-        }).then(() => {
-            console.log('UV Service worker registered successfully');
+        }).then(() => navigator.serviceWorker.ready).then(() => {
+            console.log('UV Service worker registered and ready');
         }).catch(err => {
             console.error('UV Service worker registration failed:', err);
         });
@@ -45,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return finalUrl;
     }
 
-    function loadUrl(targetUrl) {
+    async function loadUrl(targetUrl) {
         if (!targetUrl) return;
 
         const normalized = normalizeUrl(targetUrl);
@@ -60,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (uvProxyToggle.checked) {
             console.log("Loading via Ultraviolet Proxy");
+            await swReady;
             browserFrame.removeAttribute('srcdoc');
             // Route through UV SW
             browserFrame.src = __uv$config.prefix + __uv$config.encodeUrl(normalized);
