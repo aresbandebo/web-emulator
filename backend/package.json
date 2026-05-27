@@ -1,6 +1,7 @@
 {
   "name": "my-bare-server",
   "version": "1.0.0",
+  "type": "module",
   "description": "A bare server for Ultraviolet",
   "main": "index.js",
   "scripts": {

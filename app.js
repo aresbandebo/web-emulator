@@ -139,6 +139,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const btnStealth = document.getElementById('stealth-btn');
+    if (btnStealth) {
+        btnStealth.addEventListener('click', () => {
+            let win = window.open('about:blank', '_blank');
+            if (win) {
+                let doc = win.document;
+                let iframe = doc.createElement('iframe');
+                iframe.style.width = '100vw';
+                iframe.style.height = '100vh';
+                iframe.style.border = 'none';
+                iframe.style.margin = '0';
+                iframe.src = window.location.href;
+                doc.body.style.margin = '0';
+                doc.body.appendChild(iframe);
+                window.location.replace('https://classroom.google.com'); // Redirect current tab to hide evidence
+            } else {
+                alert("Popup blocked! Please allow popups to use Stealth Mode.");
+            }
+        });
+    }
+
     // Auto-focus the URL input
     urlInput.focus();
 });
