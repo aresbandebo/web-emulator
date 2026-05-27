@@ -15,7 +15,18 @@ const uv = new UVServiceWorker();
 
 async function handleRequest(event) {
     if (uv.route(event)) {
-        return await uv.fetch(event);
+        let response = await uv.fetch(event);
+        
+        // Inject headers to allow SharedArrayBuffer (Fixes gx.games and high-perf engines)
+        let newHeaders = new Headers(response.headers);
+        newHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
+        newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
+        
+        return new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: newHeaders
+        });
     }
     
     return await fetch(event.request)
