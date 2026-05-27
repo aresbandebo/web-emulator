@@ -15,12 +15,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const proxyModeToggle = document.getElementById('proxy-mode');
     const uvProxyToggle = document.getElementById('uv-proxy-mode');
 
-    // Register Ultraviolet Service Worker
+    // Clean up old Service Workers (like COI) and Register Ultraviolet
     let swReady = Promise.resolve();
     if ('serviceWorker' in navigator) {
-        swReady = navigator.serviceWorker.register('sw.js', {
-            scope: __uv$config.prefix
-        }).then(() => navigator.serviceWorker.ready).then(() => {
+        swReady = navigator.serviceWorker.getRegistrations().then((registrations) => {
+            const uvScope = new URL(__uv$config.prefix, window.location).href;
+            for (let reg of registrations) {
+                if (reg.scope !== uvScope) {
+                    console.log('Unregistering old service worker at', reg.scope);
+                    reg.unregister();
+                }
+            }
+        }).then(() => {
+            return navigator.serviceWorker.register('sw.js', {
+                scope: __uv$config.prefix
+            });
+        }).then((registration) => {
+            // Wait for the service worker to be active
+            return new Promise((resolve) => {
+                if (registration.active) {
+                    resolve();
+                } else {
+                    const worker = registration.installing || registration.waiting;
+                    worker.addEventListener('statechange', (e) => {
+                        if (e.target.state === 'activated') resolve();
+                    });
+                }
+            });
+        }).then(() => {
             console.log('UV Service worker registered and ready');
         }).catch(err => {
             console.error('UV Service worker registration failed:', err);
