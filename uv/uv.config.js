@@ -8,7 +8,7 @@ self.__uv$config = {
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,
     handler: _uv_base + 'uv/uv.handler.js',
-    bare: 'https://bare-server-106043020272.northamerica-northeast1.run.app/bare/',
+    bare: 'https://07bc515f-002a-4c2b-b629-0b79c3e12484-00-12paqk670eu4s.riker.replit.dev/bare/',
     client: _uv_base + 'uv/uv.client.js',
     bundle: _uv_base + 'uv/uv.bundle.js',
     config: _uv_base + 'uv/uv.config.js',
