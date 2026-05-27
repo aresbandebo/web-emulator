@@ -2,7 +2,7 @@ import { BareMuxConnection } from "./uv/bare-mux/index.mjs";
 
 const basePath = location.pathname.replace(/\/[^\/]*$/, '/');
 const connection = new BareMuxConnection(basePath + "uv/bare-mux/worker.js");
-connection.setTransport(basePath + "uv/bare-transport/index.mjs", ["https://07bc515f-002a-4c2b-b629-0b79c3e12484-00-12paqk670eu4s.riker.replit.dev/bare/"])
+connection.setTransport(basePath + "uv/bare-transport/index.mjs", ["https://tomp.app/"])
     .then(() => console.log("Bare transport successfully initialized!"))
     .catch(err => console.error("Failed to set Bare transport:", err));
 
